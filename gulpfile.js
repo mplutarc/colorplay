@@ -7,7 +7,7 @@ let browsersync = require('browser-sync').create();
 
 
 function style(done) {
-	gulp.src('./**/*.sass')
+	gulp.src('./style/**/*.sass')
 		.pipe(sass().on('error', sass.logError))
 		.pipe(sass({outputStyle: 'compressed'}))
 		.pipe(autoprefix(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
@@ -31,7 +31,7 @@ function browserReload(done) {
 }
 
 function watch(){
-	gulp.watch('./style/**/.sass', style);
+	gulp.watch('./style/**/*', style);
 	gulp.watch('./**/*.html', browserReload);
 	gulp.watch('./**/*.js', browserReload);
 }
