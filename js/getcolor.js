@@ -1,6 +1,5 @@
 $(function() {
 	$('img').mousemove(function(e) {
-
 		if(!this.canvas) {
 			this.canvas = $('<canvas />')[0];
 			this.canvas.width = this.width;
