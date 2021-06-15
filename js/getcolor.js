@@ -1,5 +1,11 @@
 $(function() {
-	$('img').mousemove(function(e) {
+
+	$(".color_scheme").click(function (event) {
+		$(".color_getter").offset ( {
+			left: event.pageX - 4,
+			top: event.pageY - 4
+		});
+
 		if(!this.canvas) {
 			this.canvas = $('<canvas />')[0];
 			this.canvas.width = this.width;
@@ -8,9 +14,12 @@ $(function() {
 		}
 		let pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
 		let hexOutput = `#${rgbToHex(pxData)}`;
+		let darkerRGB = `rgb(${pxData[0]-20}, ${pxData[1]-20}, ${pxData[2]-20})`;
 		$('#RGBoutput').html(`R: ${pxData[0]} G: ${pxData[1]} B: ${pxData[2]}`);
 		$('#HEXoutput').html(hexOutput);
-		$('body').css({'background-color': hexOutput})
+		$('body').css({'background-color': hexOutput});
+		$('header').css({'background-color': darkerRGB});
+		$('header img').css({'border-color': darkerRGB});
 	});
 });
 const rgbToHex = (px) =>{
