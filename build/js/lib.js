@@ -5,7 +5,6 @@ export const rgbToHex = (px) =>{
 };
 
 export const rgbToHsl = (rgb) => {
-	console.log(rgb);
 	let sep = rgb.indexOf(",") > -1 ? "," : " ";
 	rgb = rgb.substr(4).split(")")[0].split(sep);
 
@@ -20,45 +19,54 @@ export const rgbToHsl = (rgb) => {
 		b = rgb[2]/ 255,
 		max = Math.max(r, g, b),
 		min = Math.min(r, g, b),
-		delta = max - min,
-		h,s,l;
+		delta = max - min
+	;
+	const hsl = {
+			h: 0,
+			s: 0,
+			l: 0
+		}
 
 	if (delta === 0)
-		h = 0;
+		hsl.h = 0;
 	// Red is max
 	else if (max === r)
-		h = ((g - b) / delta) % 6;
+		hsl.h = ((g - b) / delta) % 6;
 	// Green is max
 	else if (max === g)
-		h = (b - r) / delta + 2;
+		hsl.h = (b - r) / delta + 2;
 	// Blue is max
 	else
-		h = (r - g) / delta + 4;
+		hsl.h = (r - g) / delta + 4;
 
-	h = Math.round(h * 60);
+	hsl.h = Math.round(hsl.h * 60);
 
 	// Make negative hues positive behind 360°
-	if (h < 0)
-		h += 360;
+	if (hsl.h < 0)
+		hsl.h += 360;
 
 	// Calculate lightness
-	l = (max + min) / 2;
+	hsl.l = (max + min) / 2;
 
 	// Calculate saturation
-	s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+	hsl.s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * hsl.l - 1));
 
 	// Multiply l and s by 100
-	s = +(s * 100).toFixed(1);
-	l = +(l * 100).toFixed(1);
-	$('.slider').val(l);
+	hsl.s = +(hsl.s * 100).toFixed(1);
+	hsl.l = +(hsl.l * 100).toFixed(1);
 
-	return `hsl(${h}, ${s}%, ${l}%)`
+	hsl.l = Math.round(hsl.l);
+
+	return hsl
 };
+
 'use strict';
 
 // const {rgbToHex, rgbToHsl} =  require('./convertColors');
 
 // import {rgbToHex, rgbToHsl} from "../../build/js/lib";
+
+// import {rgbToHsl} from "./convertColors";
 
 $(function() {
 	$(".color_scheme").click(function (event) {
@@ -76,25 +84,39 @@ $(function() {
 		let pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
 		let hexOutput = `#${rgbToHex(pxData)}`;
 		let rgb = `rgb(${pxData[0]}, ${pxData[1]}, ${pxData[2]})`;
+
 		$('#RGBoutput').html(`R: ${pxData[0]} G: ${pxData[1]} B: ${pxData[2]}`);
 		$('#HEXoutput').html(hexOutput);
+		$('.lightValue').html(rgbToHsl(rgb).l);
+		$('.slider').val(rgbToHsl(rgb).l);
+
 		$('header').css({'background-color': hexOutput});
 		$('header img').css({'border-color': hexOutput});
-		console.log(rgbToHsl(rgb));
 	});
 });
 
 'use strict';
 
-// import {rgbToHsl} from "../../build/js/lib";
-
 let elem = document.querySelector('input[type="range"]');
 
-let rangeValue = function(){
-	let newValue = elem.value;
+let rangeValue = () =>{
+	let val = elem.value;
 	let target = document.querySelector('.lightValue');
-	target.innerHTML = newValue;
-	// let hsl = rgbToHsl($('header').css('background-color'));
+	target.innerHTML = val;
+	console.log(val);
+
+	changeLight(val);
+}
+
+const changeLight = (val) =>{
+	let rgb = $('header').css('background-color');
+	const hsl = {
+		h: rgbToHsl(rgb).h,
+		s: rgbToHsl(rgb).s,
+		l: val
+	}
+	$('header').css('background-color', `hsl(${hsl.h},${hsl.s}%,${hsl.l}%)`)
+	console.log(hsl)
 }
 
 elem.addEventListener("input", rangeValue);

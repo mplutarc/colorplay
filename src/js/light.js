@@ -1,14 +1,25 @@
 'use strict';
 
-// import {rgbToHsl} from "../../build/js/lib";
-
 let elem = document.querySelector('input[type="range"]');
 
-let rangeValue = function(){
-	let newValue = elem.value;
+let rangeValue = () =>{
+	let val = elem.value;
 	let target = document.querySelector('.lightValue');
-	target.innerHTML = newValue;
-	// let hsl = rgbToHsl($('header').css('background-color'));
+	target.innerHTML = val;
+	console.log(val);
+
+	changeLight(val);
+}
+
+const changeLight = (val) =>{
+	let rgb = $('header').css('background-color');
+	const hsl = {
+		h: rgbToHsl(rgb).h,
+		s: rgbToHsl(rgb).s,
+		l: val
+	}
+	$('header').css('background-color', `hsl(${hsl.h},${hsl.s}%,${hsl.l}%)`)
+	console.log(hsl)
 }
 
 elem.addEventListener("input", rangeValue);
