@@ -55,6 +55,7 @@ export const rgbToHsl = (rgb) => {
 	hsl.s = +(hsl.s * 100).toFixed(1);
 	hsl.l = +(hsl.l * 100).toFixed(1);
 
+	hsl.s = Math.round(hsl.s);
 	hsl.l = Math.round(hsl.l);
 
 	return hsl

@@ -55,6 +55,7 @@ export const rgbToHsl = (rgb) => {
 	hsl.s = +(hsl.s * 100).toFixed(1);
 	hsl.l = +(hsl.l * 100).toFixed(1);
 
+	hsl.s = Math.round(hsl.s);
 	hsl.l = Math.round(hsl.l);
 
 	return hsl
@@ -62,37 +63,20 @@ export const rgbToHsl = (rgb) => {
 
 'use strict';
 
-// const {rgbToHex, rgbToHsl} =  require('./convertColors');
-
-// import {rgbToHex, rgbToHsl} from "../../build/js/lib";
-
-// import {rgbToHsl} from "./convertColors";
-
-$(function() {
-	$(".color_scheme").click(function (event) {
-		$(".color_getter").offset ( {
-			left: event.pageX - 4,
-			top: event.pageY - 4
-		});
-
-		if(!this.canvas) {
-			this.canvas = $('<canvas />')[0];
-			this.canvas.width = this.width;
-			this.canvas.height = this.height;
-			this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
-		}
-		let pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
-		let hexOutput = `#${rgbToHex(pxData)}`;
-		let rgb = `rgb(${pxData[0]}, ${pxData[1]}, ${pxData[2]})`;
-
-		$('#RGBoutput').html(`R: ${pxData[0]} G: ${pxData[1]} B: ${pxData[2]}`);
-		$('#HEXoutput').html(hexOutput);
-		$('.lightValue').html(rgbToHsl(rgb).l);
-		$('.slider').val(rgbToHsl(rgb).l);
-
-		$('header').css({'background-color': hexOutput});
-		$('header img').css({'border-color': hexOutput});
+$(".color_scheme").click(function (event) {
+	$(".color_getter").offset({
+		left: event.pageX - 4,
+		top: event.pageY - 4
 	});
+
+	if (!this.canvas) {
+		this.canvas = $('<canvas />')[0];
+		this.canvas.width = this.width;
+		this.canvas.height = this.height;
+		this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+	}
+	let pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+	setColor(pxData);
 });
 
 'use strict';
@@ -103,20 +87,34 @@ let rangeValue = () =>{
 	let val = elem.value;
 	let target = document.querySelector('.lightValue');
 	target.innerHTML = val;
-	console.log(val);
 
-	changeLight(val);
+	return val;
 }
 
-const changeLight = (val) =>{
-	let rgb = $('header').css('background-color');
+// const changeLight = (val) =>{
+// 	let rgb = $('header').css('background-color');
+// }
+
+elem.addEventListener("input", rangeValue);
+export const setColor = (pxData) => {
+	let hexOutput = `#${rgbToHex(pxData)}`;
+	let rgb = `rgb(${pxData[0]}, ${pxData[1]}, ${pxData[2]})`;
+	let light = rangeValue()
+	console.log(light)
+
+	$('#RGBoutput').html(`R: ${pxData[0]} G: ${pxData[1]} B: ${pxData[2]}`);
+	$('#HEXoutput').html(hexOutput);
+	$('.lightValue').html(rgbToHsl(rgb).l);
+	$('.slider').val(rgbToHsl(rgb).l);
+
 	const hsl = {
 		h: rgbToHsl(rgb).h,
 		s: rgbToHsl(rgb).s,
-		l: val
+		l: light
 	}
 	$('header').css('background-color', `hsl(${hsl.h},${hsl.s}%,${hsl.l}%)`)
 	console.log(hsl)
-}
 
-elem.addEventListener("input", rangeValue);
+	// $('header').css({'background-color': hexOutput});
+	$('header img').css({'border-color': hexOutput});
+}
