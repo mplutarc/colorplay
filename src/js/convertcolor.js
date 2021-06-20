@@ -1,10 +1,12 @@
-export const rgbToHex = (px) =>{
-	if (px[0] > 255 || px[1] > 255 || px[2] > 255)
+'use strict';
+
+const rgbToHex = (rgb) =>{
+	if (rgb.r > 255 || rgb.g > 255 || rgb.b > 255)
 		throw "Invalid color component";
-	return ((px[0] << 16) | (px[1] << 8) | px[2]).toString(16);
+	return ((rgb.r << 16) | (rgb.g << 8) | rgb.b).toString(16);
 };
 
-export const rgbToHsl = (rgb) => {
+const rgbToHsl = (rgb) => {
 	let sep = rgb.indexOf(",") > -1 ? "," : " ";
 	rgb = rgb.substr(4).split(")")[0].split(sep);
 
@@ -60,3 +62,37 @@ export const rgbToHsl = (rgb) => {
 
 	return hsl
 };
+
+const hslToRgb = (hsl) =>{
+	let rgb = {
+		r: 0,
+		g: 0,
+		b: 0
+	};
+
+	hsl.s /= 100;
+	hsl.l /= 100;
+
+	let c = (1 - Math.abs(2 * hsl.l - 1)) * hsl.s,
+		x = c * (1 - Math.abs((hsl.h / 60) % 2 - 1)),
+		m = hsl.l - c/2;
+
+	if (0 <= hsl.h && hsl.h < 60) {
+		rgb.r = c; rgb.g = x; rgb.b = 0;
+	} else if (60 <= hsl.h && hsl.h < 120) {
+		rgb.r = x; rgb.g = c; rgb.b = 0;
+	} else if (120 <= hsl.h && hsl.h < 180) {
+		rgb.r = 0; rgb.g = c; rgb.b = x;
+	} else if (180 <= hsl.h && hsl.h < 240) {
+		rgb.r = 0; rgb.g = x; rgb.b = c;
+	} else if (240 <= hsl.h && hsl.h < 300) {
+		rgb.r = x; rgb.g = 0; rgb.b = c;
+	} else if (300 <= hsl.h && hsl.h < 360) {
+		rgb.r = c; rgb.g = 0; rgb.b = x;
+	}
+	rgb.r = Math.round((rgb.r + m) * 255);
+	rgb.g = Math.round((rgb.g + m) * 255);
+	rgb.b = Math.round((rgb.b + m) * 255);
+
+	return rgb;
+}

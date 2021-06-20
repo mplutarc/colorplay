@@ -1,22 +1,22 @@
-export const setColor = (pxData) => {
-	let hexOutput = `#${rgbToHex(pxData)}`;
+'use strict';
+
+const setColor = (pxData, light = 100) => {
 	let rgb = `rgb(${pxData[0]}, ${pxData[1]}, ${pxData[2]})`;
-	let light = rangeValue()
-	console.log(light)
-
-	$('#RGBoutput').html(`R: ${pxData[0]} G: ${pxData[1]} B: ${pxData[2]}`);
-	$('#HEXoutput').html(hexOutput);
-	$('.lightValue').html(rgbToHsl(rgb).l);
-	$('.slider').val(rgbToHsl(rgb).l);
-
 	const hsl = {
 		h: rgbToHsl(rgb).h,
 		s: rgbToHsl(rgb).s,
 		l: light
 	}
-	$('header').css('background-color', `hsl(${hsl.h},${hsl.s}%,${hsl.l}%)`)
 	console.log(hsl)
+	rgb = hslToRgb(hsl)
+	let hexOutput = `#${rgbToHex(rgb)}`;
+	console.log(hexOutput)
 
-	// $('header').css({'background-color': hexOutput});
-	$('header img').css({'border-color': hexOutput});
+	$('#RGBoutput').html(`R: ${rgb.r} G: ${rgb.g} B: ${rgb.b}`);
+	$('#HEXoutput').html(hexOutput);
+	$('.lightValue').html(light);
+	$('.slider').val(light);
+
+	$('header').css('background-color', `rgb(${rgb.r},${rgb.g},${rgb.b})`)
+	$('header img').css({'border-color': `rgb(${rgb.r},${rgb.g},${rgb.b})`});
 }

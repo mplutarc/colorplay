@@ -1,5 +1,7 @@
 'use strict';
 
+let pxData;
+
 $(".color_scheme").click(function (event) {
 	$(".color_getter").offset({
 		left: event.pageX - 4,
@@ -12,6 +14,6 @@ $(".color_scheme").click(function (event) {
 		this.canvas.height = this.height;
 		this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
 	}
-	let pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
-	setColor(pxData);
+	pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
+	setColor(pxData, light);
 });

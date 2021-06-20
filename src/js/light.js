@@ -1,17 +1,14 @@
 'use strict';
 
-let elem = document.querySelector('input[type="range"]');
+let light
+let lightRange = document.querySelector('.slider')
 
-let rangeValue = () =>{
-	let val = elem.value;
-	let target = document.querySelector('.lightValue');
-	target.innerHTML = val;
+const rangeValue = () =>{
+	light = lightRange.value
+	let target = document.querySelector('.lightValue')
+	target.innerHTML = light
 
-	return val;
+	setColor(pxData, light)
 }
 
-// const changeLight = (val) =>{
-// 	let rgb = $('header').css('background-color');
-// }
-
-elem.addEventListener("input", rangeValue);
+lightRange.addEventListener("input", rangeValue)
