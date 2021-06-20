@@ -7,20 +7,20 @@ const rgbToHex = (rgb) =>{
 };
 
 const rgbToHsl = (rgb) => {
-	let sep = rgb.indexOf(",") > -1 ? "," : " ";
-	rgb = rgb.substr(4).split(")")[0].split(sep);
+	// let sep = rgb.indexOf(",") > -1 ? "," : " ";
+	// rgb = rgb.substr(4).split(")")[0].split(sep);
+	//
+	// for (let R in rgb) {
+	// 	let r = rgb[R];
+	// 	if (r.indexOf("%") > -1)
+	// 		rgb[R] = Math.round(r.substr(0,r.length - 1) / 100 * 255);
+	// }
 
-	for (let R in rgb) {
-		let r = rgb[R];
-		if (r.indexOf("%") > -1)
-			rgb[R] = Math.round(r.substr(0,r.length - 1) / 100 * 255);
-	}
-
-	let r = rgb[0]/ 255,
-		g = rgb[1]/ 255,
-		b = rgb[2]/ 255,
-		max = Math.max(r, g, b),
-		min = Math.min(r, g, b),
+	rgb.r = rgb.r/ 255;
+	rgb.g = rgb.g/ 255;
+	rgb.b = rgb.b/ 255;
+	let max = Math.max(rgb.r, rgb.g, rgb.b),
+		min = Math.min(rgb.r, rgb.g, rgb.b),
 		delta = max - min
 	;
 	const hsl = {
@@ -32,14 +32,14 @@ const rgbToHsl = (rgb) => {
 	if (delta === 0)
 		hsl.h = 0;
 	// Red is max
-	else if (max === r)
-		hsl.h = ((g - b) / delta) % 6;
+	else if (max === rgb.r)
+		hsl.h = ((rgb.g - rgb.b) / delta) % 6;
 	// Green is max
-	else if (max === g)
-		hsl.h = (b - r) / delta + 2;
+	else if (max === rgb.g)
+		hsl.h = (rgb.b - rgb.r) / delta + 2;
 	// Blue is max
 	else
-		hsl.h = (r - g) / delta + 4;
+		hsl.h = (rgb.r - rgb.g) / delta + 4;
 
 	hsl.h = Math.round(hsl.h * 60);
 

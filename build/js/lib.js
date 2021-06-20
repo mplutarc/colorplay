@@ -7,20 +7,20 @@ const rgbToHex = (rgb) =>{
 };
 
 const rgbToHsl = (rgb) => {
-	let sep = rgb.indexOf(",") > -1 ? "," : " ";
-	rgb = rgb.substr(4).split(")")[0].split(sep);
+	// let sep = rgb.indexOf(",") > -1 ? "," : " ";
+	// rgb = rgb.substr(4).split(")")[0].split(sep);
+	//
+	// for (let R in rgb) {
+	// 	let r = rgb[R];
+	// 	if (r.indexOf("%") > -1)
+	// 		rgb[R] = Math.round(r.substr(0,r.length - 1) / 100 * 255);
+	// }
 
-	for (let R in rgb) {
-		let r = rgb[R];
-		if (r.indexOf("%") > -1)
-			rgb[R] = Math.round(r.substr(0,r.length - 1) / 100 * 255);
-	}
-
-	let r = rgb[0]/ 255,
-		g = rgb[1]/ 255,
-		b = rgb[2]/ 255,
-		max = Math.max(r, g, b),
-		min = Math.min(r, g, b),
+	rgb.r = rgb.r/ 255;
+	rgb.g = rgb.g/ 255;
+	rgb.b = rgb.b/ 255;
+	let max = Math.max(rgb.r, rgb.g, rgb.b),
+		min = Math.min(rgb.r, rgb.g, rgb.b),
 		delta = max - min
 	;
 	const hsl = {
@@ -32,14 +32,14 @@ const rgbToHsl = (rgb) => {
 	if (delta === 0)
 		hsl.h = 0;
 	// Red is max
-	else if (max === r)
-		hsl.h = ((g - b) / delta) % 6;
+	else if (max === rgb.r)
+		hsl.h = ((rgb.g - rgb.b) / delta) % 6;
 	// Green is max
-	else if (max === g)
-		hsl.h = (b - r) / delta + 2;
+	else if (max === rgb.g)
+		hsl.h = (rgb.b - rgb.r) / delta + 2;
 	// Blue is max
 	else
-		hsl.h = (r - g) / delta + 4;
+		hsl.h = (rgb.r - rgb.g) / delta + 4;
 
 	hsl.h = Math.round(hsl.h * 60);
 
@@ -113,7 +113,12 @@ $(".color_scheme").click(function (event) {
 		this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
 	}
 	pxData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
-	setColor(pxData, light);
+	let rgb = {
+		r: pxData[0],
+		g: pxData[1],
+		b: pxData[2]
+	}
+	setColor(rgb, light);
 });
 
 'use strict';
@@ -126,14 +131,26 @@ const rangeValue = () =>{
 	let target = document.querySelector('.lightValue')
 	target.innerHTML = light
 
-	setColor(pxData, light)
+	let rgb = {
+		r: 0,
+		g: 0,
+		b: 0
+	}
+	if(pxData){
+		rgb = {
+			r: pxData[0],
+			g: pxData[1],
+			b: pxData[2]
+		}
+	}
+
+	setColor(rgb, light)
 }
 
 lightRange.addEventListener("input", rangeValue)
 'use strict';
 
-const setColor = (pxData, light = 100) => {
-	let rgb = `rgb(${pxData[0]}, ${pxData[1]}, ${pxData[2]})`;
+const setColor = (rgb = {r: 0, g: 0, b: 0}, light = 100) => {
 	const hsl = {
 		h: rgbToHsl(rgb).h,
 		s: rgbToHsl(rgb).s,

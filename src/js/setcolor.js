@@ -1,7 +1,6 @@
 'use strict';
 
-const setColor = (pxData, light = 100) => {
-	let rgb = `rgb(${pxData[0]}, ${pxData[1]}, ${pxData[2]})`;
+const setColor = (rgb = {r: 0, g: 0, b: 0}, light = 100) => {
 	const hsl = {
 		h: rgbToHsl(rgb).h,
 		s: rgbToHsl(rgb).s,
