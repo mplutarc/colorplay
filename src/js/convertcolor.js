@@ -7,15 +7,6 @@ const rgbToHex = (rgb) =>{
 };
 
 const rgbToHsl = (rgb) => {
-	// let sep = rgb.indexOf(",") > -1 ? "," : " ";
-	// rgb = rgb.substr(4).split(")")[0].split(sep);
-	//
-	// for (let R in rgb) {
-	// 	let r = rgb[R];
-	// 	if (r.indexOf("%") > -1)
-	// 		rgb[R] = Math.round(r.substr(0,r.length - 1) / 100 * 255);
-	// }
-
 	rgb.r = rgb.r/ 255;
 	rgb.g = rgb.g/ 255;
 	rgb.b = rgb.b/ 255;

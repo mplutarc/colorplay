@@ -1,4 +1,5 @@
 $form-range-track-bg: #000000
+$start-color: rgb(235, 235, 235)
 
 @font-face
 	font-family: Jura
@@ -11,7 +12,6 @@ $form-range-track-bg: #000000
 html, body
 	position: relative
 	height: 100%
-	//width: 100%
 body
 	margin: 0
 p
@@ -22,72 +22,148 @@ header
 	width: 100%
 	display: flex
 	align-items: center
-	transition: background-color 1.5s cubic-bezier(0.18, 0.89, 0.32, 1.28)
+	transition: background-color 0.5s cubic-bezier(0.65, 0.05, 0.36, 1)
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25)
+	border-radius: 0 0 5px 5px
 	img, p
 		margin-left: 2rem
 	img
 		width: 50px
 		height: 50px
-		border: 1px solid #F5C94F
+		border: 1px solid $start-color
 		border-radius: 50%
+		transition: all 1.5s cubic-bezier(0.65, 0.05, 0.36, 1)
 	p
 		font-size: 36px
 		line-height: 1em
+		text-shadow: 5px 5px 0 $start-color
+		transition: all 1.5s cubic-bezier(0.65, 0.05, 0.36, 1)
 
 main
-	padding: 32px 114px
+	padding: 32px
 	.text
 		width: 60%
+	.interact
+		display: flex
+		justify-content: space-between
+		&_btn
+			background-color: $start-color
+			border-radius: 5px
+			border: none
+			padding: 0.5rem
+			height: fit-content
+			transition: all 0.5s cubic-bezier(0.65, 0.05, 0.36, 1)
+			&:hover
+				background-color: rgb(215, 215, 215)
+				box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5)
+		&_accord
+			width: 500px
+			&_btn
+				cursor: pointer
+				padding: 0.5rem
+				width: 100%
+				text-align: left
+				border: none
+				border-radius: 5px
+				background-color: $start-color
+				outline: none
+				margin-bottom: 0.5rem
+				transition: 0.4s
+				&.active, &:hover
+					background-color: rgb(215, 215, 215)
+			.panel
+				padding: 0
+				background-color: $start-color
+				max-height: 0
+				margin-bottom: 0
+				overflow: hidden
+				border-radius: 5px
+				transition: all 0.5s ease-out
+				p
+					margin: 0
 
 .instruments
 	position: fixed
-	right: 0
 	bottom: 0
+	right: 0
 	z-index: 999
-	width: 350px
-	padding: 8px
+	width: 50px
+	height: 50px
+	padding: 0.1rem
 	background: #FFFFFF
 	box-shadow: -3px 0px 5px rgba(0, 0, 0, 0.25)
 	border-radius: 5px
+	transition: all 0.5s ease-in-out
+	&_text
+		transition: all 0.1s ease-in-out
+		display: none
+	.close
+		display: none
+		position: absolute
+		margin: 0
+		top: 0.5rem
+		left: 0.5rem
+		cursor: pointer
+		font-weight: 900
+		line-height: 0.5rem
+		color: black
+		transition: all 0.1s ease-in-out
 	.color
 		position: relative
 		border-radius: 50%
+		cursor: pointer
+		transition: all 0.1s ease-in-out
 		&_scheme
 			width: 100%
 			border-radius: 50%
 			margin-bottom: 0.5rem
+			transition: all 0.1s ease-in-out
 		&_getter
+			display: none
 			width: 0.5rem
 			height: 0.5rem
 			position: absolute
 			top: calc(100%/2 - 0.5rem)
 			left: calc(100%/2 - 0.5rem)
+			z-index: 1000
 			background: #000000
 			border: 1px solid rgba(207, 207, 207, 0.25)
 			border-radius: 50%
 			box-shadow: 0 0 5px rgba(207, 207, 207, 0.25)
+			transition: all 0.5s cubic-bezier(0.65, 0.05, 0.36, 1)
 	.slider
+		display: none
 		appearance: none
 		width: 100%
 		height: 1px
 		background: #000000
 		outline: none
-		margin: 1rem 0
+		margin: 1rem 0 2rem 0
+		transition: all 0.1s ease-in-out
 		&::-webkit-slider-thumb
 			-webkit-appearance: none
 			height: 1rem
 			width: 1rem
 			border-radius: 50%
-			background: #000000
-	select
-		margin-top: 0.5rem
-		box-shadow: -2px 0px 4px rgba(0, 0, 0, 0.25)
-		border-radius: 5px
-		border: none
-		&:focus
-			outline: none
+			cursor: pointer
+			background-color: #000000
+	&.opened
+		width: 250px
+		height: auto
+		padding: 0.5rem
+		.instruments_text
+			display: block
+		.close
+			display: block
+		.color_getter
+			display: block
+		.slider
+			display: block
 
 .credits
 	position: absolute
 	bottom: 0.5rem
 	left: 0.5rem
+	font-size: 0.5rem
+	a
+		font-size: 0.5rem
